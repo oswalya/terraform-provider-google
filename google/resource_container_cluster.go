@@ -1771,7 +1771,9 @@ func expandMasterAuth(configured interface{}) *containerBeta.MasterAuth {
 func expandMasterAuthorizedNetworksConfig(configured interface{}) *containerBeta.MasterAuthorizedNetworksConfig {
 	l := configured.([]interface{})
 	if len(l) == 0 {
-		return nil
+		return &containerBeta.MasterAuthorizedNetworksConfig{
+			Enabled: false,
+		}
 	}
 	result := &containerBeta.MasterAuthorizedNetworksConfig{
 		Enabled: true,
@@ -1991,6 +1993,9 @@ func flattenMasterAuth(ma *containerBeta.MasterAuth) []map[string]interface{} {
 
 func flattenMasterAuthorizedNetworksConfig(c *containerBeta.MasterAuthorizedNetworksConfig) []map[string]interface{} {
 	if c == nil {
+		return nil
+	}
+	if !c.Enabled {
 		return nil
 	}
 	result := make(map[string]interface{})
